@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<HTML>
+  <head>
+    <title>Employee Management</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='index.css') }}">
+  </head>
+  <body>
+      <div class="container">
+          <h2>Employee Management</h2>
+          <div class="button" onclick="window.location.href = '/employees'"><i class="fas fa-users"></i> Employees Info</div> <!-- Views all employees -->
+          <div class="button" onclick="window.location.href = '/add'"><i class="fas fa-user-plus"></i> Add an employee</div> <!-- Adds a specific employee -->
+          <div class="button" onclick="window.location.href = '/delete'"><i class="fas fa-user-minus"></i> Delete an employee</div> <!-- Removes a specific employee -->
+          <div class="button" onclick="window.location.href = '/upload'"><i class="fas fa-upload"></i> Upload </div> <!-- Imports employees file from a csv format -->
+          <div class="button" onclick="window.location.href = '/update'"><i class="fas fa-edit"></i> Edit </div> <!-- Updates a specific employee information -->
+          <div class="button" onclick="window.location.href = '/search'"><i class="fas fa-search"></i> Search </div> <!-- Searches for a specific employee -->
+        </div>
+  </body>
+</html>

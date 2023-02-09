@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Delete Employee</title>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='delete.css') }}">
+  </head>
+  <body>
+    <header>
+      <h1>Delete Emoloyee</h1>
+    </header>
+    <div class="container">
+      <form action="/delete" method="POST">
+        <input type="text" placeholder="Enter ID" name="id" />
+        <button type="submit">Delete Record</button>
+        <button type="submit" formaction="/">Back to Home</button>
+      </form>
+    </div>
+  </body>
+</html>
