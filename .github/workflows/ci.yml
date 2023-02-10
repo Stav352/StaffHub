@@ -2,9 +2,9 @@ name: Docker Image CI
 # Define trigger conditions that result in CI pipeline workflow
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   # Configure set of actions that will be performed once triggered
@@ -15,6 +15,12 @@ jobs:
     steps:
     # A github repository named 'checkout' ( ref - github.com/actions/checkout ) contains an action yaml file defining actions to be performed in order to checkout 
     - uses: actions/checkout@v3
+    - name: creating env files
+      run: |
+        touch .appenv .mongoenv
+        echo ${{ secrets.MONGO }} >> .appenv
+        echo ${{ secrets.MONGO_INITDB_ROOT_USERNAME }} >> .mongoenv
+        echo ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }} >> .mongoenv
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
     - name: Set up Docker Buildx
@@ -23,22 +29,8 @@ jobs:
       run: docker compose up -d
     - name: testing
       run: |
-        curl localhost
-        curl localhost/add
-        curl --location --request POST 'localhost/add' \
-          --form 'user_id="314833204"' \
-          --form 'user_first_name="Stav"' \
-          --form 'user_last_name="Nahum"' \
-          --form 'user_address="Example"' \
-          --form 'user_email="stav352@gmail.com"' \
-          --form 'user_date_of_birth="26-09-99"' \
-          --form 'user_gender="Male"' \
-          --form 'user_department="DevOps"' \
-          --form 'user_phone_number="0528349868"'
-        curl localhost/search
-        curl localhost/health
-        curl localhost/upload
-        docker compose dowd
+        bash e2e.sh
+        docker compose down
     - name: Login to Docker Hub
       uses: docker/login-action@v2
       with:

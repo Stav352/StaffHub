@@ -1,1 +1,1 @@
-MONGO=mongodb://root:nVEck3VTUWvVPSNYv83E@portfolio-mongodb-headless:27017/
+MONGO='mongodb://root:root@portfolio-mongodb-headless:27017/'

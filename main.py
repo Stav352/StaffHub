@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, url_for
 from pymongo import MongoClient
 import id_validate
 import os
+from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__)
 
@@ -26,7 +27,7 @@ def choice(option):
     return render_template(f"{option}.html"), 200
 
 @app.post('/add')
-def adduser():
+def add_employee():
     conn = db_connect()
     status = request.form.get("status")
     user_id = request.form.get("user_id")
@@ -78,7 +79,7 @@ def adduser():
     return data, 200
 
 @app.route('/search')
-def getuser():
+def get_employee():
     conn = db_connect()
     data = list(conn.find({}))
     clean_data = []
@@ -98,7 +99,7 @@ def getuser():
     return render_template("search.html", data=clean_data), 200
 
 @app.route('/employees')
-def getbatch():
+def get_employees_info():
     conn = db_connect()
     data = list(conn.find({}))
     clean_data = []
@@ -118,7 +119,7 @@ def getbatch():
     return render_template("employees.html", data=clean_data), 200
 
 @app.route('/update', methods=['GET', 'POST'])
-def updateuser():
+def update_employee():
     if request.method == 'POST':
         conn = db_connect()
         id = request.form['id']
@@ -131,18 +132,20 @@ def updateuser():
         department = request.form['department']
         phone_number = request.form['phone_number']
         status = request.form['status']
-        conn.update_one({'id': id}, {"$set": {
-            'first name': first_name,
-            'last name': last_name,
-            'address': address,
-            'email': email,
-            'date of birth': date_of_birth,
-            'gender': gender,
-            'department': department,
-            'phone number': phone_number,
-            'status': status
-        }})
-        return 'Data updated', 200
+        if conn.find_one({'id': id}):
+            conn.update_one({'id': id}, {"$set": {
+                'first name': first_name,
+                'last name': last_name,
+                'address': address,
+                'email': email,
+                'date of birth': date_of_birth,
+                'gender': gender,
+                'department': department,
+                'phone number': phone_number,
+                'status': status}})
+            return 'Data updated', 200
+        else:
+            return "Could not find the employee specified. Please valdiate the legitimacy of the desired employee's ID"
     else:
         conn = db_connect()
         data = list(conn.find({}))
@@ -160,7 +163,6 @@ def updateuser():
             cleanest.append(i["phone number"])
             cleanest.append(i["status"])
             clean_data.append(cleanest)
-        print(clean_data)
         return render_template("update.html", data=clean_data), 200
 
 @app.post('/upload')
@@ -171,7 +173,7 @@ def upload():
     for i in data.split('\n'):
         i = i.split(',')
         if not id_validate.CheckID(i[0]):
-            return "Given ID's are not valid"
+            return "Given ID's are not valid", 404
         if any(char.isdigit() for char in f"{i[1]},{i[2]},{i[6]},{i[7]}"):
             return "There's a invalid character in the input field", 404
 
@@ -179,7 +181,7 @@ def upload():
             return "The phone number is not a valid number", 404
     
         if conn.find_one({"id": i[0]}) is not None:
-            return "User ID already exists", 401
+            return "User ID already exists", 404
         conn.insert_one(
             {
                 "id": i[0],
@@ -196,12 +198,25 @@ def upload():
     return "The data was uploaded successfully!", 200
 
 @app.post('/delete')
-def deleteuser():
+def delete_employee():
     conn = db_connect()
     id = request.form.get('id')
-    conn.delete_one({'id': id})
-    return "Document deleted successfully!", 200
+    if conn.find_one({'id': id}):
+        conn.delete_one({'id': id})
+    else:
+        return "The user was not found"
+    if conn.find_one({'id': id}):
+        return "The employee could not be deleted", 500
+    else:
+        return "Employee was deleted successfully!", 200
 
+@app.errorhandler(Exception)
+def handle_exception(e):
+    # pass through HTTP errors
+    if isinstance(e, HTTPException):
+        return e
+    # now you're handling non-HTTP exceptions only
+    return render_template("404.html", e=e), 404
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0",port=5000, debug=False)
