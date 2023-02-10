@@ -5,7 +5,7 @@ function purge(){
 	docker exec -it db mongosh -u root -p root --authenticationDatabase admin portfolio --eval "db.users.deleteMany({})"
 }
 purge
-test1=$(curl app)
+test1=$(curl localhost)
 expected_result1='''<!DOCTYPE HTML>
 <HTML>
   <head>
@@ -34,7 +34,7 @@ else
     echo "Failed Test #1 - Could not curl to app on port 80"
     exit 1
 fi
-test2=$(curl --location --request POST 'app/add' \
+test2=$(curl --location --request POST 'localhost/add' \
 --form 'user_id="314833203"' \
 --form 'user_first_name="Stav"' \
 --form 'user_last_name="Nahum"' \
@@ -53,7 +53,7 @@ else
     echo "Failed Test #2 - Could not add an employee to the database."
     exit 1
 fi
-test3="curl --location --request GET 'app/employees'"
+test3="curl --location --request GET 'localhost/employees'"
 expected_result3='<!DOCTYPE html>
 <html>
   <head>
@@ -101,7 +101,7 @@ else
     echo "Failed Test #3 - Could not get employees information."
     exit 1
 fi
-test4=$(curl --location --request POST 'app/upload' \
+test4=$(curl --location --request POST 'localhost/upload' \
 --form 'file=@"./TestingEmployees.csv"')
 expected_result4="The data was uploaded successfully"
 if echo "$test4" | grep -q "$expected_result4"
@@ -112,7 +112,7 @@ else
     exit 1
 fi
 
-test5=$(curl --location --request POST 'app/update' \
+test5=$(curl --location --request POST 'localhost/update' \
 --form 'id="314833203"' \
 --form 'first_name="Stav"' \
 --form 'last_name="Nahum"' \
@@ -133,7 +133,7 @@ else
     exit 1
 fi
 
-test6=$(curl --location --request POST 'app/delete' \
+test6=$(curl --location --request POST 'localhost/delete' \
 --form 'id="314833203"')
 expected_result6="Employee was deleted successfully!"
 if echo "$test6" | grep -q "$expected_result6"
