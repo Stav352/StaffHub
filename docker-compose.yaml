@@ -1,0 +1,43 @@
+services:
+  db:
+    image: bitnami/mongodb:6.0.4-debian-11-r0
+    platform: linux/amd64
+    env_file:
+      - ./.mongoenv
+    volumes:
+      - dbdata:/data/db
+    networks:
+      - backend
+  app:
+    build: .
+    hostname: app
+    container_name: app
+    links:
+      - "db:portfolio-mongodb-headless"
+    env_file:
+      - ./.appenv
+    depends_on:
+      - db
+    networks:
+      - backend
+      - frontend
+  reverse_proxy:
+    image: nginx
+    container_name: nginx
+    hostname: nginx
+    ports:
+    - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./templates:/usr/share/nginx/html
+      - ./static:/usr/share/nginx/html/static
+
+    depends_on:
+      - app
+    networks:
+      - frontend
+volumes:
+  dbdata:
+networks:
+  backend:
+  frontend:
