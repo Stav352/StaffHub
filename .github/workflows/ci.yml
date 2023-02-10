@@ -21,6 +21,8 @@ jobs:
         echo ${{ secrets.MONGO }} >> .appenv
         echo ${{ secrets.MONGO_INITDB_ROOT_USERNAME }} >> .mongoenv
         echo ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }} >> .mongoenv
+        ls
+        cat .appenv .mongoenv
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
     - name: Set up Docker Buildx
