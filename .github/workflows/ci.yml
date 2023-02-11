@@ -12,10 +12,8 @@ on:
 
 jobs:
   # Configure set of actions that will be performed once triggered
-  build:
-
+  Build:
     runs-on: ubuntu-latest
-
     steps:
     # A github repository named 'checkout' ( ref - github.com/actions/checkout ) contains an action yaml file defining actions to be performed in order to checkout 
     - name: Checkout
@@ -33,6 +31,33 @@ jobs:
         # Waits the required time in order for tests to run successfully.
         sleep 3
         bash ./e2e.sh
+  Publish:
+    needs: Build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Tag, you're it.
+      run: |
+        git fetch --tags
+        LATEST_COMMIT_MSG=$(git log -1 --pretty=%B)
+        MAJOR=$(git tag | tail -1 | cut -d '.' -f1)
+        MINOR=$(git tag | tail -1 | cut -d '.' -f2)
+        PATCH=$(git tag | tail -1 | cut -d '.' -f3)
+        if echo "$LATEST_COMMIT_MSG" | grep -q 'MAJOR'; then
+          ((MAJOR=$MAJOR+1))
+          updated_tag="$MAJOR.0.0"
+        elif echo "$LATEST_COMMIT_MSG" | grep -q 'MINOR'; then
+          ((MINOR=$MINOR+1))
+          updated_tag="$MAJOR.$MINOR.0"
+        else:
+          ((PATCH=$PATCH+1))
+          updated_tag="$MAJOR.$MINOR.$PATCH"
+        fi
+        git tag $(updated_tag)
+        git push --tag
 
     - name: Login to Docker Hub
       uses: docker/login-action@v2
