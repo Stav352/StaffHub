@@ -31,16 +31,10 @@ jobs:
         # Waits the required time in order for tests to run successfully.
         sleep 3
         bash ./e2e.sh
-  Publish:
-    needs: Build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
 
+      if: github.ref == 'refs/heads/main'
     - name: Tag, you're it.
-      run: "git config --global user.email \"stav352@gmail.com\"\ngit config --global user.name \"Stav352\" \ngit fetch --tags\nLATEST_COMMIT_MSG=$(git log -1 --pretty=%B)\nMAJOR=$(git tag | tail -1 | cut -d '.' -f1)\nMINOR=$(git tag | tail -1 | cut -d '.' -f2)\nPATCH=$(git tag | tail -1 | cut -d '.' -f3)\nif echo \"$LATEST_COMMIT_MSG\" | grep -q 'MAJOR'; then\n  ((MAJOR=$MAJOR+1))\n  updated_tag=\"$MAJOR.0.0\"\nelif echo \"$LATEST_COMMIT_MSG\" | grep -q 'MINOR'; then\n  ((MINOR=$MINOR+1))\n  updated_tag=\"$MAJOR.$MINOR.0\"\nelse:\n  ((PATCH=$PATCH+1))\n  updated_tag=\"$MAJOR.$MINOR.$PATCH\"\nfi\ngit tag $updated_tag\ngit push --tag\n  #magic___^_^___line\n"
+      run: "git config --global user.email \"stav352@gmail.com\"\ngit config --global user.name \"Stav352\" \ngit fetch --tags\nLATEST_COMMIT_MSG=$(git log -1 --pretty=%B)\nMAJOR=$(git tag | tail -1 | cut -d '.' -f1)\nMINOR=$(git tag | tail -1 | cut -d '.' -f2)\nPATCH=$(git tag | tail -1 | cut -d '.' -f3)\nif echo \"$LATEST_COMMIT_MSG\" | grep -q 'MAJOR'; then\n  ((MAJOR=$MAJOR+1))\n  updated_tag=\"$MAJOR.0.0\"\nelif echo \"$LATEST_COMMIT_MSG\" | grep -q 'MINOR'; then\n  ((MINOR=$MINOR+1))\n  updated_tag=\"$MAJOR.$MINOR.0\"\nelse:\n  ((PATCH=$PATCH+1))\n  updated_tag=\"$MAJOR.$MINOR.$PATCH\"\nfi\ngit tag \"$updated_tag\"\ngit push --tag\n  #magic___^_^___line\n"
     - name: Login to Docker Hub
       uses: docker/login-action@v2
       with:
