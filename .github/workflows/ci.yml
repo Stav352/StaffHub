@@ -33,6 +33,7 @@ jobs:
         bash ./e2e.sh
       if: github.ref == 'refs/heads/main'
     - name: Tag, you're it.
+      id: tag
       run: |
         git fetch --tags
         LATEST_COMMIT_MSG=$(git log -1 --pretty=%B)
@@ -62,4 +63,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: stav352/portfolio:latest
+        tags: stav352/portfolio:${{ steps.tag.outputs.updated_tag }}
