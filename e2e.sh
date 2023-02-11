@@ -2,6 +2,7 @@
 # E2E tests:
 success=0
 function purge(){
+  # Clean the database prior to initializing test environment
 	docker exec -it db mongosh -u root -p root --authenticationDatabase admin portfolio --eval "db.users.deleteMany({})"
 }
 purge
