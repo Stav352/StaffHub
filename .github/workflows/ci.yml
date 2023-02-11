@@ -48,9 +48,9 @@ jobs:
           updated_tag="$MAJOR.$MINOR.0"
         else:
           ((PATCH=$PATCH+1))
-          updated_tag="$MAJOR.$MINOR.$PATCH"
+          updated_tag="${MAJOR}.${MINOR}.${PATCH}"
         fi
-        git tag "$updated_tag" || git tag "1.0.0"
+        git tag "${updated_tag}" || git tag "1.0.0"
         git push --tag
     - name: Login to Docker Hub
       uses: docker/login-action@v2
