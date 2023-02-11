@@ -46,7 +46,7 @@ jobs:
         elif echo "$LATEST_COMMIT_MSG" | grep -q 'MINOR'; then
           ((MINOR=$MINOR+1))
           updated_tag="$MAJOR.$MINOR.0"
-        else:
+        else
           ((PATCH=$PATCH+1))
           updated_tag="${MAJOR}.${MINOR}.${PATCH}"
         fi
