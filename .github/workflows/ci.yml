@@ -31,7 +31,7 @@ jobs:
     - name: E2E Testing
       run: |
         # Waits the required time in order for tests to run successfully.
-        sleep 4
+        sleep 3
         bash ./e2e.sh
 
     - name: Login to Docker Hub
