@@ -31,8 +31,8 @@ jobs:
         # Waits the required time in order for tests to run successfully.
         sleep 3
         bash ./e2e.sh
-      if: github.ref == 'refs/heads/main'
     - name: Tag, you're it.
+      if: github.ref == 'refs/heads/main'
       id: tag
       run: |
         git fetch --tags
