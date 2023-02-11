@@ -31,10 +31,26 @@ jobs:
         # Waits the required time in order for tests to run successfully.
         sleep 3
         bash ./e2e.sh
-
       if: github.ref == 'refs/heads/main'
     - name: Tag, you're it.
-      run: "git config --global user.email \"stav352@gmail.com\"\ngit config --global user.name \"Stav352\" \ngit fetch --tags\nLATEST_COMMIT_MSG=$(git log -1 --pretty=%B)\nMAJOR=$(git tag | tail -1 | cut -d '.' -f1)\nMINOR=$(git tag | tail -1 | cut -d '.' -f2)\nPATCH=$(git tag | tail -1 | cut -d '.' -f3)\nif echo \"$LATEST_COMMIT_MSG\" | grep -q 'MAJOR'; then\n  ((MAJOR=$MAJOR+1))\n  updated_tag=\"$MAJOR.0.0\"\nelif echo \"$LATEST_COMMIT_MSG\" | grep -q 'MINOR'; then\n  ((MINOR=$MINOR+1))\n  updated_tag=\"$MAJOR.$MINOR.0\"\nelse:\n  ((PATCH=$PATCH+1))\n  updated_tag=\"$MAJOR.$MINOR.$PATCH\"\nfi\ngit tag \"$updated_tag\"\ngit push --tag\n  #magic___^_^___line\n"
+      run: |
+        git fetch --tags
+        LATEST_COMMIT_MSG=$(git log -1 --pretty=%B)
+        MAJOR=$(git tag | tail -1 | cut -d '.' -f1)
+        MINOR=$(git tag | tail -1 | cut -d '.' -f2)
+        PATCH=$(git tag | tail -1 | cut -d '.' -f3)
+        if echo "$LATEST_COMMIT_MSG" | grep -q 'MAJOR'; then
+          ((MAJOR=$MAJOR+1))
+          updated_tag="$MAJOR.0.0"
+        elif echo "$LATEST_COMMIT_MSG" | grep -q 'MINOR'; then
+          ((MINOR=$MINOR+1))
+          updated_tag="$MAJOR.$MINOR.0"
+        else:
+          ((PATCH=$PATCH+1))
+          updated_tag="$MAJOR.$MINOR.$PATCH"
+        fi
+        git tag "$updated_tag" || git tag "1.0.0"
+        git push --tag
     - name: Login to Docker Hub
       uses: docker/login-action@v2
       with:
