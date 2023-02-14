@@ -78,7 +78,7 @@ jobs:
       uses: actions/checkout@v3
       with:
         repository: Stav352/Portfolio-GitOps-Config
+        ref: 'main'
         token: ${{ secrets.ACTION_TOKEN }}
-        path: ./charts
     - name: Update
-      run: cd $(pwd)/charts && sed -i "s/tag:.*/tag:${{ needs.Build.outputs.tag }}/" values.yaml
+      run: cat charts/values.yaml
