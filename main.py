@@ -8,8 +8,7 @@ app = Flask(__name__)
 
 def db_connect():
     # Connection to MongoDB database
-    MONGO_URI = os.environ.get('MONGO')
-    client = MongoClient(f'{MONGO_URI}')
+    client = MongoClient("mongodb://root:root@portfolio-app-mongodb-headless:27017")
     db = client["portfolio"]
     collection = db["users"]
     return collection
