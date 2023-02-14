@@ -7,5 +7,5 @@ COPY ./templates ./templates
 COPY ./static ./static
 RUN pip install -r requirements.txt
 EXPOSE 5000
-ENV MONGO "mongodb://root:root@portfolio-app-mongodb-headless:27017/"
+ENV MONGO "mongodb://root:root@portfolio-app-mongodb-headless:27017"
 ENTRYPOINT python3 main.py
