@@ -81,4 +81,4 @@ jobs:
         token: ${{ secrets.ACTION_TOKEN }}
         path: ./charts
     - name: Update
-      run: cd charts && sed -i "s/tag:.*/tag:${{ needs.Build.outputs.tag }}/" values.yaml || echo "NO GOOD" && cd /home/runner/work/Portfolio-application/Portfolio-application && sed -i "s/tag:.*/tag:${{ needs.Build.outputs.tag }}/" values.yaml
+      run: cd ./charts && sed -i "s/tag:.*/tag:${{ needs.Build.outputs.tag }}/" values.yaml || echo "NO GOOD" && cd /home/runner/work/Portfolio-application/Portfolio-application/charts && sed -i "s/tag:.*/tag:${{ needs.Build.outputs.tag }}/" values.yaml
