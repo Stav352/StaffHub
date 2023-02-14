@@ -8,8 +8,10 @@ app = Flask(__name__)
 
 def db_connect():
     # Connection to MongoDB database
-    MONGO_URI = os.getenv('MONGO')
+    MONGO_URI = os.getenv("MONGO")
+    print("LOGS FROM DB")
     print(f'{MONGO_URI}')
+    print(MONGO_URI)
     client = MongoClient(f'{MONGO_URI}')
     db = client["portfolio"]
     collection = db["users"]
@@ -21,6 +23,9 @@ def health():
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+    print("LOGS FROM APP")
+    MONG=os.getenv("MONGO")
+    print(MONG)
     return render_template("index.html"), 200
 
 @app.route("/<option>")

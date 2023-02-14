@@ -7,5 +7,5 @@ COPY ./templates ./templates
 COPY ./static ./static
 RUN pip install -r requirements.txt
 EXPOSE 5000
-ENV MONGO ""
+ENV MONGO=""
 ENTRYPOINT python3 main.py
