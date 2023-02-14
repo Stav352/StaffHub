@@ -67,6 +67,9 @@ jobs:
         context: .
         push: true
         tags: stav352/portfolio:${{ steps.tag.outputs.tag }}
+  Update:
+    runs-on: ubuntu-latest
+    steps:
     - name: Login to GitOps repo
       if: github.ref == 'refs/heads/main'
       uses: actions/checkout@v3
@@ -75,5 +78,4 @@ jobs:
         token: ${{ secrets.ACTION_TOKEN }}
         path: ./charts
     - name: Update
-      if: github.ref == 'refs/heads/main'
       run: ls
