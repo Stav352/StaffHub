@@ -14,6 +14,8 @@ jobs:
   # Configure set of actions that will be performed once triggered
   Build:
     runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
     steps:
     # A github repository named 'checkout' ( ref - github.com/actions/checkout ) contains an action yaml file defining actions to be performed in order to checkout 
     - name: Checkout
