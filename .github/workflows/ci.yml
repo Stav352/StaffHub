@@ -78,4 +78,4 @@ jobs:
         token: ${{ secrets.ACTION_TOKEN }}
         path: ./charts
     - name: Update
-      run: cd /charts && sed -i "s/tag:.*/tag:/${{ needs.Build.steps.tag.output.tag }}/values.yaml"
+      run: sed -i "s/tag:.*/tag:/${{ needs.Build.steps.tag.output.tag }}/values.yaml"
