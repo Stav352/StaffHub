@@ -82,6 +82,8 @@ jobs:
         token: ${{ secrets.ACTION_TOKEN }}
     - name: Update
       run: |
+        git config --global user.email "${{ secrets.EMAIL }}"
+        git config --global user.name "${{ secrets.USERNAME }}"
         sed -i "s/tag:.*/tag:${{ needs.Build.outputs.tag }}/" charts/values.yaml
         git add charts/values.yaml
         git commit -m "CI Update"
