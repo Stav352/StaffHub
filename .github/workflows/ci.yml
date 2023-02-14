@@ -81,4 +81,7 @@ jobs:
         ref: 'main'
         token: ${{ secrets.ACTION_TOKEN }}
     - name: Update
-      run: sed -i "s/tag:.*/tag:${{ needs.Build.outputs.tag }}/" charts/values.yaml
+      run: |
+        sed -i "s/tag:.*/tag:${{ needs.Build.outputs.tag }}/" charts/values.yaml
+        git commit -m "CI Update"
+        git push origin main
