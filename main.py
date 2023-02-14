@@ -6,10 +6,13 @@ from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__)
 
-MONGO_URI = os.environ.get('MONGO')
-client = MongoClient(str(MONGO_URI))    
-db = client["portfolio"]
-conn = db["users"]
+def db_connect():
+    # Connection to MongoDB database
+    MONGO_URI = os.environ.get('MONGO')
+    client = MongoClient(str(MONGO_URI))    
+    db = client["portfolio"]
+    collection = db["users"]
+    return collection
 
 @app.route('/health')
 def health():
@@ -25,6 +28,7 @@ def choice(option):
 
 @app.post('/add')
 def add_employee():
+    conn = db_connect()
     status = request.form.get("status")
     user_id = request.form.get("user_id")
     user_first_name = request.form.get("user_first_name")
@@ -76,6 +80,7 @@ def add_employee():
 
 @app.route('/search')
 def get_employee():
+    conn = db_connect()
     data = list(conn.find({}))
     clean_data = []
     for i in data:
@@ -95,6 +100,7 @@ def get_employee():
 
 @app.route('/employees')
 def get_employees_info():
+    conn = db_connect()
     data = list(conn.find({}))
     clean_data = []
     for i in data:
@@ -115,6 +121,7 @@ def get_employees_info():
 @app.route('/update', methods=['GET', 'POST'])
 def update_employee():
     if request.method == 'POST':
+        conn = db_connect()
         id = request.form['id']
         first_name = request.form['first_name']
         last_name = request.form['last_name']
@@ -140,6 +147,7 @@ def update_employee():
         else:
             return "Could not find the employee specified. Please valdiate the legitimacy of the desired employee's ID"
     else:
+        conn = db_connect()
         data = list(conn.find({}))
         clean_data = []
         for i in data:
@@ -159,6 +167,7 @@ def update_employee():
 
 @app.post('/upload')
 def upload():
+    conn = db_connect()
     file = request.files['file']
     data = file.read().decode()
     for i in data.split('\n'):
@@ -190,6 +199,7 @@ def upload():
 
 @app.post('/delete')
 def delete_employee():
+    conn = db_connect()
     id = request.form.get('id')
     if conn.find_one({'id': id}):
         conn.delete_one({'id': id})
