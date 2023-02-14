@@ -24,7 +24,7 @@ def health():
 @app.route("/", methods=["GET", "POST"])
 def index():
     print("LOGS FROM APP")
-    MONG = os.environ.get('MONGO')
+    MONG = os.environ.get("MONGO")
     print(MONG)
     print(f"{MONG}")
     return render_template("index.html"), 200
