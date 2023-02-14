@@ -81,4 +81,4 @@ jobs:
         ref: 'main'
         token: ${{ secrets.ACTION_TOKEN }}
     - name: Update
-      run: cat charts/values.yaml
+      run: sed -i "s/tag:.*/tag:${{ needs.Build.outputs.tag }}/" charts/values.yaml
