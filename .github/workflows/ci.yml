@@ -68,6 +68,7 @@ jobs:
         push: true
         tags: stav352/portfolio:${{ steps.tag.outputs.tag }}
   Update:
+    needs: Build
     runs-on: ubuntu-latest
     steps:
     - name: Login to GitOps repo
