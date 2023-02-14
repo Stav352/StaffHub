@@ -30,7 +30,6 @@ services:
     - 80:80
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./errors:/usr/share/nginx/html
     networks:
       - frontend
 
