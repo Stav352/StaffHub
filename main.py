@@ -3,13 +3,10 @@ from pymongo import MongoClient
 import id_validate
 import os
 from werkzeug.exceptions import HTTPException
-import time
 
 app = Flask(__name__)
 
 MONGO_URI = os.environ.get('MONGO')
-for i in range(100):
-    print(MONGO_URI)
 client = MongoClient(str(MONGO_URI))    
 db = client["portfolio"]
 conn = db["users"]
@@ -212,4 +209,4 @@ def handle_exception(e):
     return render_template("404.html", e=e), 404
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",port=5000, debug=True)
+    app.run(host="0.0.0.0",port=5000, debug=False)
