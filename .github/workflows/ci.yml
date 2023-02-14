@@ -83,5 +83,6 @@ jobs:
     - name: Update
       run: |
         sed -i "s/tag:.*/tag:${{ needs.Build.outputs.tag }}/" charts/values.yaml
+        git add charts/values.yaml
         git commit -m "CI Update"
         git push origin main
