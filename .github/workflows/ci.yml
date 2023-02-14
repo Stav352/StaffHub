@@ -37,9 +37,9 @@ jobs:
       run: |
         git fetch --tags
         LATEST_COMMIT_MSG=$(git log -1 --pretty=%B)
-        MAJOR=$(git tag | tail -1 | cut -d '.' -f1)
-        MINOR=$(git tag | tail -1 | cut -d '.' -f2)
-        PATCH=$(git tag | tail -1 | cut -d '.' -f3)
+        MAJOR=$(git tag | sort -V | tail -1 | cut -d '.' -f1)
+        MINOR=$(git tag | sort -V | tail -1 | cut -d '.' -f2)
+        PATCH=$(git tag | sort -V | tail -1 | cut -d '.' -f3)
         if echo "$LATEST_COMMIT_MSG" | grep -q 'MAJOR'; then
           ((MAJOR=$MAJOR+1))
           updated_tag="$MAJOR.0.0"
@@ -79,4 +79,4 @@ jobs:
         token: ${{ secrets.ACTION_TOKEN }}
         path: ./charts
     - name: Update
-      run: sed -i 's/tag:.*/tag:/${{ needs.Build.steps.tag.output.tag }}/values.yaml'
+      run: echo "{{ needs.Build.steps.tag.output.tag }}"
