@@ -100,6 +100,6 @@ jobs:
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         SLACK_COLOR: ${{ job.status }}
-        SLACK_TITLE: "CI Pipeline ${{ job.status }}"
+        SLACK_TITLE: "CI Pipeline $(gh run list --workflow workflow_history.yaml | grep -oh 'completed.*'' | head -1 | awk '{print $2}')"
         SLACK_FOOTER: "Powered by Stav's Portfolio CI  :rocket: "
 
