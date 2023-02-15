@@ -89,6 +89,7 @@ jobs:
         git commit -m "CI Update"
         git push origin main
   slackNotification:
+    needs: Update
     name: Slack Notification
     if: success() || failure()
     runs-on: ubuntu-latest
