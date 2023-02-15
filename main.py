@@ -10,10 +10,28 @@ app = Flask(__name__)
 def db_connect():
     # Connection to MongoDB database
     MONGO_URI = os.environ.get('MONGO')
-    client = MongoClient(str(MONGO_URI))    
+    client = MongoClient(str(MONGO_URI))
     db = client["portfolio"]
     collection = db["users"]
     return collection
+
+def toDict(data):
+    clean_data = []
+    for i in data:
+        cleanest = []
+        cleanest.append(i["id"])
+        cleanest.append(i["first name"])
+        cleanest.append(i["last name"])
+        cleanest.append(i["address"])
+        cleanest.append(i["email"])
+        cleanest.append(i["date of birth"])
+        cleanest.append(i["gender"])
+        cleanest.append(i["department"])
+        cleanest.append(i["phone number"])
+        cleanest.append(i["status"])
+        clean_data.append(cleanest)
+    return clean_data
+
 
 @app.route('/health')
 def health():
@@ -23,9 +41,9 @@ def health():
 def index():
     return render_template("index.html"), 200
 
-@app.route("/<option>")
-def choice(option):
-    return render_template(f"{option}.html"), 200
+# @app.route("/<option>")
+# def choice(option):
+#     return render_template(f"{option}.html"), 200
 
 @app.post('/add')
 def add_employee():
@@ -42,19 +60,18 @@ def add_employee():
     user_phone_number = request.form.get("user_phone_number")
     
     if not id_validate.CheckID(user_id):
-        logging.critical("Failed to add an employee")
+        logging.info("Failed to add an employee")
         return "ID not valid", 404
     if any(char.isdigit() for char in f"{user_first_name},{user_last_name},{user_gender},{user_department}"):
-        logging.critical("Failed to add an employee")
+        logging.info("Failed to add an employee")
         return "There's an invalid character in the input field", 404
 
     if not int(f"{user_phone_number}"):
-        logging.critical("Failed to add an employee")
+        logging.info("Failed to add an employee")
         return "The phone number is not a valid number", 404
     if conn.find_one({"id": user_id}) is not None:
-        logging.critical("Failed to add an employee")
+        logging.info("Failed to add an employee")
         return "User ID already exists", 404
-    data = [ user_id, user_first_name, user_last_name, user_address, user_email, user_date_of_birth, user_gender, user_department, user_phone_number ]
     data = {
         "id": user_id,
         "first name": user_first_name,
@@ -88,40 +105,14 @@ def add_employee():
 def get_employee():
     conn = db_connect()
     data = list(conn.find({}))
-    clean_data = []
-    for i in data:
-        cleanest = []
-        cleanest.append(i["id"])
-        cleanest.append(i["first name"])
-        cleanest.append(i["last name"])
-        cleanest.append(i["address"])
-        cleanest.append(i["email"])
-        cleanest.append(i["date of birth"])
-        cleanest.append(i["gender"])
-        cleanest.append(i["department"])
-        cleanest.append(i["phone number"])
-        cleanest.append(i["status"])
-        clean_data.append(cleanest)
+    clean_data = toDict(data)
     return render_template("search.html", data=clean_data), 200
 
 @app.route('/employees')
 def get_employees_info():
     conn = db_connect()
     data = list(conn.find({}))
-    clean_data = []
-    for i in data:
-        cleanest = []
-        cleanest.append(i["id"])
-        cleanest.append(i["first name"])
-        cleanest.append(i["last name"])
-        cleanest.append(i["address"])
-        cleanest.append(i["email"])
-        cleanest.append(i["date of birth"])
-        cleanest.append(i["gender"])
-        cleanest.append(i["department"])
-        cleanest.append(i["phone number"])
-        cleanest.append(i["status"])
-        clean_data.append(cleanest)
+    clean_data = toDict(data)
     return render_template("employees.html", data=clean_data), 200
 
 @app.route('/update', methods=['GET', 'POST'])
@@ -152,25 +143,12 @@ def update_employee():
             logging.info("Employee's information was updated successfully")
             return 'Data updated', 200
         else:
-            logging.critical("Could not update employee")
+            logging.info("Could not update employee")
             return "Could not find the employee specified. Please valdiate the legitimacy of the desired employee's ID"
     else:
         conn = db_connect()
         data = list(conn.find({}))
-        clean_data = []
-        for i in data:
-            cleanest = []
-            cleanest.append(i["id"])
-            cleanest.append(i["first name"])
-            cleanest.append(i["last name"])
-            cleanest.append(i["address"])
-            cleanest.append(i["email"])
-            cleanest.append(i["date of birth"])
-            cleanest.append(i["gender"])
-            cleanest.append(i["department"])
-            cleanest.append(i["phone number"])
-            cleanest.append(i["status"])
-            clean_data.append(cleanest)
+        clean_data = toDict(data)
         return render_template("update.html", data=clean_data), 200
 
 @app.post('/upload')
@@ -181,18 +159,18 @@ def upload():
     for i in data.split('\n'):
         i = i.split(',')
         if not id_validate.CheckID(i[0]):
-            logging.critical("Failed to upload file")
+            logging.info("Failed to upload file")
             return "Given ID's are not valid", 404
         if any(char.isdigit() for char in f"{i[1]},{i[2]},{i[6]},{i[7]}"):
-            logging.critical("Failed to upload file")
+            logging.info("Failed to upload file")
             return "There's a invalid character in the input field", 404
 
         if not int(f"{i[8]}"):
-            logging.critical("Failed to upload file")
+            logging.info("Failed to upload file")
             return "The phone number is not a valid number", 404
     
         if conn.find_one({"id": i[0]}) is not None:
-            logging.critical("Failed to upload file")
+            logging.info("Failed to upload file")
             return "User ID already exists", 404
         conn.insert_one(
             {
@@ -217,10 +195,10 @@ def delete_employee():
     if conn.find_one({'id': id}):
         conn.delete_one({'id': id})
     else:
-        logging.critical("Failed to delete employee")
-        return "The user was not found"
+        logging.info("Failed to delete employee")
+        return "The user was not found", 404
     if conn.find_one({'id': id}):
-        logging.critical("Failed to delete employee")
+        logging.info("Failed to delete employee")
         return "The employee could not be deleted", 500
     else:
         logging.info("Employee removed successfully")

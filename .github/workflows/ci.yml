@@ -86,16 +86,10 @@ jobs:
         git config --global user.name "${{ secrets.USERNAME }}"
         sed -i "s/tag:.*/tag: ${{ needs.Build.outputs.tag }}/" charts/values.yaml
         git add charts/values.yaml
-        git commit -m "CI Update"
+        git commit -m "CI Update ${{ GITHUB_RUN_NUMBER }}"
         git push origin main
-  slackNotification:
-    needs: Update
-    name: Slack Notification
-    if: success() || failure()
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
     - name: Slack Notification
+      if: success() || failure()
       uses: rtCamp/action-slack-notify@v2
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
