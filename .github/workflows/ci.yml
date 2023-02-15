@@ -88,3 +88,17 @@ jobs:
         git add charts/values.yaml
         git commit -m "CI Update"
         git push origin main
+  slackNotification:
+    name: Slack Notification
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_COLOR: ${{ job.status }}
+        SLACK_TITLE: ${{ job.status }}
+        SLACK_FOOTER: "Powered by Stav's Portfolio CI :rocket: "
+
