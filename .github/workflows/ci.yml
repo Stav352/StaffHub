@@ -89,7 +89,7 @@ jobs:
         git commit -m "CI Update $GITHUB_RUN_NUMBER"
         git push origin main
     - name: Slack Notification
-      if: success() || failure()
+      if: always()
       uses: rtCamp/action-slack-notify@v2
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
