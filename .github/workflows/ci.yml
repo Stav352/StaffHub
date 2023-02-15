@@ -99,6 +99,7 @@ jobs:
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         SLACK_COLOR: ${{ job.status }}
-        SLACK_TITLE: ${{ job.status }}
-        SLACK_FOOTER: "Powered by Stav's Portfolio CI :rocket: "
+        SLACK_TITLE: "CI Pipeline ${{ job.status }}"
+        SLACK_MESSAGE: ":partying_face: Woot woot! The `*${{ env.REPOSITORY_NAME }}*` deployment pipeline is complete and *${{ job.status }}*! :partying_face: :heavy_check_mark: *Branch:* `${{ env.GITHUB_REF }}` :heavy_check_mark: *Commit:* `${{ github.sha }}` :heavy_check_mark: *Environment:* `${{ env.DEPLOY_ENV }}` :tada: Celebrate! :tada:"
+        SLACK_FOOTER: "Powered by Stav's Portfolio CI  :rocket: "
 
