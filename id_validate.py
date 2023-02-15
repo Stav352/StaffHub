@@ -18,4 +18,3 @@ def CheckID(ID) :
 		return True
 	else :
 		return False
-print(CheckID("155618606"))

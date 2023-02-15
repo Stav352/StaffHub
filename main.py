@@ -3,6 +3,9 @@ from pymongo import MongoClient
 import id_validate
 import os
 from werkzeug.exceptions import HTTPException
+import logging
+logging.basicConfig(level=logging.INFO, filename='app.log', format='%(asctime)s %(levelname)s %(message)s')
+logging.basicConfig(level=logging.CRITICAL, filename='app.log', format='%(asctime)s %(levelname)s %(message)s')
 
 app = Flask(__name__)
 
@@ -41,13 +44,17 @@ def add_employee():
     user_phone_number = request.form.get("user_phone_number")
     
     if not id_validate.CheckID(user_id):
+        logging.critical("Failed to add an employee")
         return "ID not valid", 404
     if any(char.isdigit() for char in f"{user_first_name},{user_last_name},{user_gender},{user_department}"):
-        return "There's a invalid character in the input field", 404
+        logging.critical("Failed to add an employee")
+        return "There's an invalid character in the input field", 404
 
     if not int(f"{user_phone_number}"):
+        logging.critical("Failed to add an employee")
         return "The phone number is not a valid number", 404
     if conn.find_one({"id": user_id}) is not None:
+        logging.critical("Failed to add an employee")
         return "User ID already exists", 404
     data = [ user_id, user_first_name, user_last_name, user_address, user_email, user_date_of_birth, user_gender, user_department, user_phone_number ]
     data = {
@@ -75,7 +82,8 @@ def add_employee():
       "phone number": user_phone_number,
       "status": status
    }) 
-   # Insert data to mongodb collection
+    # Insert data to mongodb collection
+    logging.info("Employee added successfully")
     return data, 200
 
 @app.route('/search')
@@ -143,8 +151,10 @@ def update_employee():
                 'department': department,
                 'phone number': phone_number,
                 'status': status}})
+            logging.info("Employee's information was updated successfully")
             return 'Data updated', 200
         else:
+            logging.critical("Could not update employee")
             return "Could not find the employee specified. Please valdiate the legitimacy of the desired employee's ID"
     else:
         conn = db_connect()
@@ -173,14 +183,18 @@ def upload():
     for i in data.split('\n'):
         i = i.split(',')
         if not id_validate.CheckID(i[0]):
+            logging.critical("Failed to upload file")
             return "Given ID's are not valid", 404
         if any(char.isdigit() for char in f"{i[1]},{i[2]},{i[6]},{i[7]}"):
+            logging.critical("Failed to upload file")
             return "There's a invalid character in the input field", 404
 
         if not int(f"{i[8]}"):
+            logging.critical("Failed to upload file")
             return "The phone number is not a valid number", 404
     
         if conn.find_one({"id": i[0]}) is not None:
+            logging.critical("Failed to upload file")
             return "User ID already exists", 404
         conn.insert_one(
             {
@@ -195,6 +209,7 @@ def upload():
                 "phone number": i[8],
                 "status": i[9]
             })
+        logging.info("Employee added successfully via file")
     return "The data was uploaded successfully!", 200
 
 @app.post('/delete')
@@ -204,19 +219,23 @@ def delete_employee():
     if conn.find_one({'id': id}):
         conn.delete_one({'id': id})
     else:
+        logging.critical("Failed to delete employee")
         return "The user was not found"
     if conn.find_one({'id': id}):
+        logging.critical("Failed to delete employee")
         return "The employee could not be deleted", 500
     else:
+        logging.info("Employee removed successfully")
         return "Employee was deleted successfully!", 200
 
 @app.errorhandler(Exception)
-def handle_exception(e):
+def handle_exception(error):
     # pass through HTTP errors
-    if isinstance(e, HTTPException):
-        return e
+    if isinstance(error, HTTPException):
+        return error
+    logging.critical("HTTP error has occurred in: %s", error)
     # now you're handling non-HTTP exceptions only
-    return render_template("404.html", e=e), 404
+    return render_template("404.html", error=error), 404
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",port=5000, debug=False)
+    app.run(host="0.0.0.0",port=5010, debug=False)
