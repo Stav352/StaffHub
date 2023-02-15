@@ -238,4 +238,4 @@ def handle_exception(error):
     return render_template("404.html", error=error), 404
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",port=5010, debug=False)
+    app.run(host="0.0.0.0",port=5000, debug=False)
