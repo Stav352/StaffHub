@@ -4,9 +4,7 @@ import id_validate
 import os
 from werkzeug.exceptions import HTTPException
 import logging
-logging.basicConfig(level=logging.INFO, filename='app.log', format='%(asctime)s %(levelname)s %(message)s')
-logging.basicConfig(level=logging.CRITICAL, filename='app.log', format='%(asctime)s %(levelname)s %(message)s')
-
+logging.basicConfig(level=logging.INFO, filename='./app.log', format='%(asctime)s %(levelname)s %(message)s')
 app = Flask(__name__)
 
 def db_connect():
