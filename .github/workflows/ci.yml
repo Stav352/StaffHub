@@ -31,8 +31,7 @@ jobs:
     - name: E2E Testing
       run: |
         # Waits the required time in order for tests to run successfully.
-        sleep 5
-        docker logs app
+        sleep 3
         bash ./e2e.sh
     - name: Tag, you're it.
       if: github.ref == 'refs/heads/main'
