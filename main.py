@@ -32,18 +32,9 @@ def toDict(data):
         clean_data.append(cleanest)
     return clean_data
 
-
-@app.route('/health')
-def health():
-    return "OK!",200
-
 @app.route("/", methods=["GET", "POST"])
 def index():
     return render_template("index.html"), 200
-
-# @app.route("/<option>")
-# def choice(option):
-#     return render_template(f"{option}.html"), 200
 
 @app.post('/add')
 def add_employee():
