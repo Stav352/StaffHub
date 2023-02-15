@@ -72,6 +72,8 @@ jobs:
   Update:
     needs: Build
     runs-on: ubuntu-latest
+    outputs:
+      status: ${{ job.status }}
     steps:
     - name: Login to GitOps repo
       if: github.ref == 'refs/heads/main'
@@ -99,7 +101,7 @@ jobs:
       uses: rtCamp/action-slack-notify@v2
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        SLACK_COLOR: ${{ job.status }}
-        SLACK_TITLE: "CI Pipeline $(gh run list --workflow workflow_history.yaml | grep -oh 'completed.*'' | head -1 | awk '{print $2}')"
+        SLACK_COLOR: ${{ needs.Update.outputs.status }}
+        SLACK_TITLE: "CI Pipeline ${{ needs.Update.outputs.status }}"
         SLACK_FOOTER: "Powered by Stav's Portfolio CI  :rocket: "
 
