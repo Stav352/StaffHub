@@ -32,7 +32,7 @@ jobs:
       run: |
         # Waits the required time in order for tests to run successfully.
         sleep 3
-        bash ./e2e.sh
+        bash ./e2e.sh88
     - name: Tag, you're it.
       if: github.ref == 'refs/heads/main'
       id: tag
@@ -96,4 +96,3 @@ jobs:
         SLACK_COLOR: ${{ job.status }}
         SLACK_TITLE: "CI Pipeline ${{ job.status }}"
         SLACK_FOOTER: "Powered by Stav's Portfolio CI  :rocket: "
-
