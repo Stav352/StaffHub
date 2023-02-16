@@ -11,6 +11,7 @@ app = Flask(__name__)
 json_logging.init_flask(enable_json=True)
 json_logging.init_request_instrument(app)
 
+
 # init the logger as usual
 # logger = logging.getLogger("test-logger")
 # logger.setLevel(logging.DEBUG)
