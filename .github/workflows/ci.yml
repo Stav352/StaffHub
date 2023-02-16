@@ -32,7 +32,7 @@ jobs:
       run: |
         # Waits the required time in order for tests to run successfully.
         sleep 3
-        bash ./e2e.sh88
+        bash ./e2e.sh
     - name: Tag, you're it.
       if: github.ref == 'refs/heads/main'
       id: tag
@@ -69,6 +69,14 @@ jobs:
         context: .
         push: true
         tags: stav352/portfolio:${{ steps.tag.outputs.tag }}
+    - name: Slack Notification
+      if: always()
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_COLOR: ${{ job.status }}
+        SLACK_TITLE: "CI Pipeline - Job Build status: ${{ job.status }}"
+        SLACK_FOOTER: "Powered by Stav's Portfolio CI  :rocket: "
   Update:
     needs: Build
     runs-on: ubuntu-latest
@@ -94,5 +102,5 @@ jobs:
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         SLACK_COLOR: ${{ job.status }}
-        SLACK_TITLE: "CI Pipeline ${{ job.status }}"
+        SLACK_TITLE: "CI Pipeline Job Update ${{ job.status }}"
         SLACK_FOOTER: "Powered by Stav's Portfolio CI  :rocket: "
