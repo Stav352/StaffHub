@@ -1,10 +1,10 @@
 from flask import Flask, request, render_template, url_for
 from pymongo import MongoClient
 import id_validate
-import os
+import os, sys
 from werkzeug.exceptions import HTTPException
 import logging
-logging.basicConfig(level=logging.INFO, filename='./app.log', format='%(asctime)s %(levelname)s %(message)s')
+logging.basicConfig(level=logging.INFO, stream=sys.stdout, format='%(asctime)s %(levelname)s %(message)s')
 app = Flask(__name__)
 
 def db_connect():

@@ -1,7 +1,6 @@
 FROM python:alpine3.17
 WORKDIR /app
 RUN addgroup portfolio && adduser -D portfolio -G portfolio || true
-RUN touch app.log && chmod 777 app.log
 USER portfolio
 COPY .appenv main.py requirements.txt id_validate.py ./
 COPY ./templates ./templates
