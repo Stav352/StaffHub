@@ -3,9 +3,19 @@ from pymongo import MongoClient
 import id_validate
 import os, sys
 from werkzeug.exceptions import HTTPException
-import logging
+import logging, json_logging
 logging.basicConfig(level=logging.INFO, stream=sys.stdout, format='%(asctime)s %(levelname)s %(message)s')
+
 app = Flask(__name__)
+
+json_logging.init_flask(enable_json=True)
+json_logging.init_request_instrument(app)
+
+# init the logger as usual
+# logger = logging.getLogger("test-logger")
+# logger.setLevel(logging.DEBUG)
+# logger.addHandler(logging.StreamHandler(sys.stdout))
+
 
 def db_connect():
     # Connection to MongoDB database
