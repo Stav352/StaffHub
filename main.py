@@ -206,7 +206,7 @@ def handle_exception(error):
         return error
     logging.critical("HTTP error has occurred in: %s", error)
     # now you're handling non-HTTP exceptions only
-    return render_template("404.html", error=error), 404
+    return render_template("404.html", error=error)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0",port=5000, debug=False)
