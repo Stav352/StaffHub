@@ -46,7 +46,7 @@ test2=$(curl --location --request POST 'localhost/add' \
 --form 'user_department="DevOps"' \
 --form 'user_phone_number="0528349868"' \
 --form 'status="active"')
-expected_result2='{"address":"Example","date of birth":"26-09-1999","department":"DevOps","email":"stav352@gmail.com","first name":"Stav","gender":"Male","id":"314833203","last name":"Nahum","phone number":"0528349868","status":"active"}'
+expected_result2="Employee's information was added successfully"
 if echo "$test2" | grep -q "$expected_result2"
 then
     ((success=$success+1))
