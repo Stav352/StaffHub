@@ -30,6 +30,7 @@ jobs:
         echo "${{ secrets.MONGO }}" > .appenv
         echo "${{ secrets.MONGODB_CREDS }}" > .mongoenv
         echo "${{ secrets.ENV }}" > .mongoenv
+        printenv
         docker compose up --build -d
 
     - name: E2E Testing
