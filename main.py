@@ -13,11 +13,12 @@ json_logging.init_request_instrument(app)
 
 def db_connect():
     # Connection to MongoDB database
-    PREFIX = os.environ.get('prefix')
-    HOST = os.environ.get('HOST')
-    USER = os.environ.get('USER')
-    PASSWORD = os.environ.get('PASSWORD')
-    MONGO_URI = PREFIX + USER + ':' + PASSWORD + HOST
+    # PREFIX = os.environ.get('prefix')
+    # HOST = os.environ.get('HOST')
+    # USER = os.environ.get('USER')
+    # PASSWORD = os.environ.get('PASSWORD')
+    # MONGO_URI = PREFIX + USER + ':' + PASSWORD + HOST
+    MONGO_URI = os.environ.get('MONGO')
     client = MongoClient(str(MONGO_URI))
     db = client["portfolio"]
     collection = db["users"]
