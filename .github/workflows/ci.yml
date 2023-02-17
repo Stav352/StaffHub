@@ -33,13 +33,16 @@ jobs:
         # Creates the environment variables required for the build in a secure manner
         echo "${{ secrets.MONGO }}" > .appenv
         echo "${{ secrets.MONGODB_CREDS }}" > .mongoenv
-        printenv
         docker compose up --build -d
 
     - name: E2E Testing
       run: |
         # Waits the required time in order for tests to run successfully.
         sleep 3
+        docker ps
+        docker ps -a 
+        docker logs app
+        docker logs db
         bash ./e2e.sh
     - name: Tag, you're it.
       if: github.ref == 'refs/heads/main'
