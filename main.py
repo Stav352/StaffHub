@@ -99,7 +99,7 @@ def add_employee():
    }) 
     # Insert data to mongodb collection
     logging.info("Employee added successfully")
-    return data, 200
+    return "Employee's information was added successfully", 200
 
 @app.route('/search')
 def get_employee():
