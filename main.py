@@ -16,7 +16,9 @@ def db_connect():
     # Connection to MongoDB database
     PREFIX = os.environ.get('PREFIX')
     HOST = os.environ.get('HOST')
-    MONGO_URI = os.environ.get('MONGO')
+    USER = os.environ.get('USER')
+    PASSWORD = os.environ.get('PASSWORD')
+    MONGO_URI = PREFIX + USER + ':' + PASSWORD + HOST
     client = MongoClient(str(MONGO_URI))
     db = client["portfolio"]
     collection = db["users"]
