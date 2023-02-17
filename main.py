@@ -4,17 +4,16 @@ import id_validate
 import os, sys
 from werkzeug.exceptions import HTTPException
 import logging, json_logging
+
 logging.basicConfig(level=logging.INFO, stream=sys.stdout, format='%(asctime)s %(levelname)s %(message)s')
-
 app = Flask(__name__)
-
 json_logging.init_flask(enable_json=True)
 json_logging.init_request_instrument(app)
 
 
 def db_connect():
     # Connection to MongoDB database
-    PREFIX = os.environ.get('PREFIX')
+    PREFIX = os.environ.get('prefix')
     HOST = os.environ.get('HOST')
     USER = os.environ.get('USER')
     PASSWORD = os.environ.get('PASSWORD')
