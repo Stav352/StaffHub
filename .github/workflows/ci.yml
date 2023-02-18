@@ -27,7 +27,6 @@ jobs:
         echo "${{ secrets.MONGO }}" > .appenv
         echo "${{ secrets.MONGODB_CREDS }}" > .mongoenv
         docker compose up --build -d
-        docker tag portfolio-application-app "${{ vars.ECR_REPOSITORY }}"
     - name: E2E Testing
       run: "# Waits the required time in order for tests to run successfully.\nsleep 3\ndocker ps\ndocker ps -a \ndocker logs app\ndocker logs db\nbash ./e2e.sh\n"
     - name: Tag, you're it.
@@ -52,6 +51,7 @@ jobs:
         git tag "${updated_tag}" || git tag "1.0.0"
         echo "tag=${updated_tag}" >> $GITHUB_OUTPUT
         git push --tag
+        docker tag portfolio-application-app "${{ vars.ECR_REPOSITORY }}:${updated_tag}"
     - name: Push to ECR
       id: ecr
       uses: jwalton/gh-ecr-push@v1
