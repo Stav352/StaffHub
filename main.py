@@ -64,17 +64,17 @@ def add_employee():
     user_phone_number = request.form.get("user_phone_number")
     
     if not id_validate.CheckID(user_id):
-        logging.info("Failed to add an employee")
+        logging.info("Could not add an employee")
         return "ID not valid", 404
     if any(char.isdigit() for char in f"{user_first_name},{user_last_name},{user_gender},{user_department}"):
-        logging.info("Failed to add an employee")
+        logging.info("Could not add an employee")
         return "There's an invalid character in the input field", 404
 
     if not int(f"{user_phone_number}"):
-        logging.info("Failed to add an employee")
+        logging.info("Could not add an employee")
         return "The phone number is not a valid number", 404
     if conn.find_one({"id": user_id}) is not None:
-        logging.info("Failed to add an employee")
+        logging.info("Could not add an employee")
         return "User ID already exists", 404
     data = {
         "id": user_id,
@@ -163,18 +163,18 @@ def upload():
     for i in data.split('\n'):
         i = i.split(',')
         if not id_validate.CheckID(i[0]):
-            logging.info("Failed to upload file")
+            logging.info("Failed to add an employee via file")
             return "Given ID's are not valid", 404
         if any(char.isdigit() for char in f"{i[1]},{i[2]},{i[6]},{i[7]}"):
-            logging.info("Failed to upload file")
+            logging.info("Failed to add an employee via file")
             return "There's a invalid character in the input field", 404
 
         if not int(f"{i[8]}"):
-            logging.info("Failed to upload file")
+            logging.info("Failed to add an employee via file")
             return "The phone number is not a valid number", 404
     
         if conn.find_one({"id": i[0]}) is not None:
-            logging.info("Failed to upload file")
+            logging.info("Failed to add an employee via file")
             return "User ID already exists", 404
         conn.insert_one(
             {
@@ -190,6 +190,7 @@ def upload():
                 "status": i[9]
             })
         logging.info("Employee added successfully via file")
+    logging.info("Tha data was uploaded successfully!")
     return "The data was uploaded successfully!", 200
 
 @app.post('/delete')
