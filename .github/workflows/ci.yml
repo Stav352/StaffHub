@@ -27,7 +27,7 @@ jobs:
         echo "${{ secrets.MONGO }}" > .appenv
         echo "${{ secrets.MONGODB_CREDS }}" > .mongoenv
         docker compose up --build -d
-        docker tag portfolio-application-app $ECR_REPOSITORY
+        docker tag portfolio-application-app "$ECR_REPOSITORY"
     - name: E2E Testing
       run: "# Waits the required time in order for tests to run successfully.\nsleep 3\ndocker ps\ndocker ps -a \ndocker logs app\ndocker logs db\nbash ./e2e.sh\n"
     - name: Tag, you're it.
@@ -59,7 +59,7 @@ jobs:
         access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         region: eu-west-2
-        image: $ECR_REPOSITORY:${{ steps.tag.outputs.tag }}
+        image: ${{ vars.ECR_REPOSITORY}}:${{ steps.tag.outputs.tag }}
 
     - name: Build and push
       if: github.ref == 'refs/heads/main'
