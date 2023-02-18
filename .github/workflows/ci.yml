@@ -27,16 +27,10 @@ jobs:
         echo "${{ secrets.MONGO }}" > .appenv
         echo "${{ secrets.MONGODB_CREDS }}" > .mongoenv
         docker compose up --build -d
+        docker image ls
 
     - name: E2E Testing
-      run: |
-        # Waits the required time in order for tests to run successfully.
-        sleep 3
-        docker ps
-        docker ps -a 
-        docker logs app
-        docker logs db
-        bash ./e2e.sh
+      run: "# Waits the required time in order for tests to run successfully.\nsleep 3\ndocker ps\ndocker ps -a \ndocker logs app\ndocker logs db\nbash ./e2e.sh\n"
     - name: Tag, you're it.
       if: github.ref == 'refs/heads/main'
       id: tag
@@ -59,12 +53,14 @@ jobs:
         git tag "${updated_tag}" || git tag "1.0.0"
         echo "tag=${updated_tag}" >> $GITHUB_OUTPUT
         git push --tag
-    - name: Login to Docker Hub
-      if: github.ref == 'refs/heads/main'
-      uses: docker/login-action@v2
+    - name: Push to ECR
+      id: ecr
+      uses: jwalton/gh-ecr-push@v1
       with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        region: eu-west-2
+        image: stav352/portfolio:${{ steps.tag.outputs.tag }}
 
     - name: Build and push
       if: github.ref == 'refs/heads/main'
