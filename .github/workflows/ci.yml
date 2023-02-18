@@ -61,13 +61,13 @@ jobs:
         region: eu-west-2
         image: ${{ vars.ECR_REPOSITORY}}:${{ steps.tag.outputs.tag }}
 
-    - name: Build and push
-      if: github.ref == 'refs/heads/main'
-      uses: docker/build-push-action@v4
-      with:
-        context: .
-        push: true
-        tags: stav352/portfolio:${{ steps.tag.outputs.tag }}
+    # - name: Build and push
+    #   if: github.ref == 'refs/heads/main'
+    #   uses: docker/build-push-action@v4
+    #   with:
+    #     context: .
+    #     push: true
+    #     tags: stav352/portfolio:${{ steps.tag.outputs.tag }}
     - name: Slack Notification
       if: always()
       uses: rtCamp/action-slack-notify@v2
