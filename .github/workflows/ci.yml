@@ -52,7 +52,6 @@ jobs:
         echo "tag=${updated_tag}" >> $GITHUB_OUTPUT
         git push --tag
         docker tag portfolio-application-app ${{ vars.ECR_REPOSITORY }}:${updated_tag}
-
     - name: Push to ECR
       id: ecr
       uses: jwalton/gh-ecr-push@v1
