@@ -27,6 +27,7 @@ jobs:
         echo "${{ secrets.MONGO }}" > .appenv
         echo "${{ secrets.MONGODB_CREDS }}" > .mongoenv
         docker compose up --build -d
+        docker tag portfolio-application-app 644435390668.dkr.ecr.eu-west-2.amazonaws.com/stav
         docker image ls
 
     - name: E2E Testing
