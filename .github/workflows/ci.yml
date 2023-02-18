@@ -60,7 +60,7 @@ jobs:
         access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         region: eu-west-2
-        image: ${{ vars.ECR_REPOSITORY }}:${{ steps.tag.outputs.tag }}
+        image: ${{ steps.tag.outputs.tag }}
 
     # - name: Build and push
     #   if: github.ref == 'refs/heads/main'
