@@ -51,7 +51,7 @@ jobs:
         git tag "${updated_tag}" || git tag "1.0.0"
         echo "tag=${updated_tag}" >> $GITHUB_OUTPUT
         git push --tag
-        docker tag portfolio-application-app portfolio-application-app:${updated_tag}
+        docker tag portfolio-application-app stav:${updated_tag}
 
     - name: Push to ECR
       id: ecr
@@ -60,7 +60,7 @@ jobs:
         access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         region: eu-west-2
-        image: portfolio-application-app:${{ steps.tag.outputs.tag }}
+        image: stav:${{ steps.tag.outputs.tag }}
 
     # - name: Build and push
     #   if: github.ref == 'refs/heads/main'
