@@ -51,13 +51,14 @@ jobs:
         echo "tag=${updated_tag}" >> $GITHUB_OUTPUT
         git push --tag
         docker tag portfolio-application-app  stav:${updated_tag}
-    - name: Build and push
-      if: github.ref == 'refs/heads/main'
-      uses: docker/build-push-action@v4
+    - name: Push to ECR
+      id: ecr
+      uses: jwalton/gh-ecr-push@v1
       with:
-        context: .
-        push: true
-        tags: stav:${{ steps.tag.outputs.tag }}
+        access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        region: eu-west-2
+        image: stav:${{ steps.tag.outputs.tag }}
     - name: Slack Notification
       if: always()
       uses: rtCamp/action-slack-notify@v2
