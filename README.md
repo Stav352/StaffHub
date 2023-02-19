@@ -14,16 +14,6 @@ This project is an employees' management platform that aims to streamline the pr
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 [![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
 
-
-## API Reference
-
-#### Get all employees
-
-```http
-  GET /employees
-```
-
-
 ## Tech Stack
 
 **Containerization:** Docker, Kubernetes
@@ -92,5 +82,5 @@ For support, email Stav@example.com.
 ## Roadmap
 
 - Add more API methods
-
-
+- Study and integrate AWS Secret Manager for MongoDB secrets
+- Study and integrate KEDA for Event-driven Kubernetes Autoscaling

@@ -51,17 +51,18 @@ jobs:
         git tag "${updated_tag}" || git tag "1.0.0"
         echo "tag=${updated_tag}" >> $GITHUB_OUTPUT
         git push --tag
-        docker tag portfolio-application-app stav:${updated_tag}
+        docker tag portfolio-application-app  644435390668.dkr.ecr.eu-west-2.amazonaws.com/stav:${updated_tag}
 
-    - name: Push to ECR
-      id: ecr
-      uses: jwalton/gh-ecr-push@v1
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
       with:
-        access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        region: eu-west-2
-        image: stav:${{ steps.tag.outputs.tag }}
-
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-2
+    - name: Push to ECR
+      run: |
+        aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 644435390668.dkr.ecr.eu-west-2.amazonaws.com
+        docker push  644435390668.dkr.ecr.eu-west-2.amazonaws.com/stav:${{ steps.outputs.tag}}
     # - name: Build and push
     #   if: github.ref == 'refs/heads/main'
     #   uses: docker/build-push-action@v4
