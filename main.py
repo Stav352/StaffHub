@@ -13,13 +13,9 @@ json_logging.init_request_instrument(app)
 
 def db_connect():
     # Connection to MongoDB database
-    # PREFIX = os.environ.get('prefix')
     HOST = os.environ.get('HOST')
     USER = os.environ.get('USER')
     PASSWORD = os.environ.get('PASSWORD')
-    # MONGO_URI = PREFIX + USER + ':' + PASSWORD + HOST
-    # MONGO_URI = os.environ.get('MONGO')
-    # client = MongoClient(str(MONGO_URI))
     client = MongoClient(host=HOST, username=USER, password=PASSWORD)
     db = client["portfolio"]
     collection = db["users"]
@@ -77,18 +73,6 @@ def add_employee():
     if conn.find_one({"id": user_id}) is not None:
         logging.info("Could not add an employee")
         return "User ID already exists", 404
-    # data = {
-    #     "id": user_id,
-    #     "first name": user_first_name,
-    #     "last name": user_last_name,
-    #     "address": user_address,
-    #     "email": user_email,
-    #     "date of birth": user_date_of_birth,
-    #     "gender": user_gender,
-    #     "department": user_department,
-    #     "phone number": user_phone_number,
-    #     "status": status
-    # }
     conn.insert_one(
    {
       "id": user_id,
@@ -151,9 +135,6 @@ def update_employee():
             logging.info("Could not update employee")
             return "Could not find the employee specified. Please valdiate the legitimacy of the desired employee's ID"
     else:
-        # conn = db_connect()
-        # data = list(conn.find({}))
-        # clean_data = toDict(data)
         return render_template("update.html"), 200 # data=clean_data), 200
 
 @app.post('/upload')
