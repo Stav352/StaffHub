@@ -27,7 +27,10 @@ jobs:
         echo "${{ secrets.MONGODB_CREDS }}" > .mongoenv
         docker compose up --build -d
     - name: E2E Testing
-      run: "# Waits the required time in order for tests to run successfully.\nsleep 3\ndocker ps\ndocker ps -a \ndocker logs app\ndocker logs db\nbash ./e2e.sh\n"
+      run: |
+        "# Waits the required time in order for tests to run successfully.
+        sleep 3
+        bash ./e2e.sh"
     - name: Tag, you're it.
       if: github.ref == 'refs/heads/main'
       id: tag
