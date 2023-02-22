@@ -5,8 +5,8 @@ This project is an employees' management platform that aims to streamline the pr
 
 
 ## Architecture
-![App Screenshot](https://imgur.com/L41qb9p)
-![App Screenshot](https://imgur.com/6co2LUa)
+![App Screenshot](https://i.imgur.com/L41qb9p.png)
+![App Screenshot](https://i.imgur.com/6co2LUa.png)
 
 
 
