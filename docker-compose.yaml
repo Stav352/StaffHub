@@ -14,7 +14,7 @@ services:
     hostname: app
     container_name: app
     links:
-      - "db:portfolio-mongodb-headless"
+      - "db:staffhub-mongodb-headless"
     env_file:
       - .appenv
     depends_on:

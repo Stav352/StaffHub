@@ -1,14 +1,11 @@
 
-# Employee Management
+# StaffHub - Team Member Management Platform
 
-This project is an employees' management platform that aims to streamline the process of managing your team members' information.
-
+This project is a comprehensive team member management platform that aims to streamline the process of managing your team members' information with modern DevOps practices.
 
 ## Architecture
 ![App Screenshot](https://i.imgur.com/L41qb9p.png)
 ![App Screenshot](https://i.imgur.com/6co2LUa.png)
-
-
 
 ## licenses
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
@@ -32,9 +29,9 @@ This project is an employees' management platform that aims to streamline the pr
 **CI/CD:** GitHub Actions, ArgoCD
 
 **Cloud Provider:** AWS
+
 ## 🔗 Links
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/stav-nahum-810091207/)
-
 
 ## FAQ
 
@@ -44,24 +41,25 @@ This app is intended to provide a user-friendly and efficient way to manage empl
 
 #### How do I add a new employee?
 
-To add a new employee, you can either fill in the fields on the “Add Employee” page or upload a csv file containing the employee information on the “Upload” page. 
+To add a new employee, you can either fill in the fields on the "Add Employee" page or upload a csv file containing the employee information on the "Upload" page. 
 
-#### How do I update an employee’s information?
+#### How do I update an employee's information?
 
-You can update an employee’s information by entering their employee ID and the updated information on the “Update Employee” page.
+You can update an employee's information by entering their employee ID and the updated information on the "Update Employee" page.
 
-#### How do I find an employee’s information?
+#### How do I find an employee's information?
 
-You can look up an employee’s information by entering their employee ID on the “Search” page.
+You can look up an employee's information by entering their employee ID on the "Search" page.
 
 #### How do I view all the current employees?
 
-You can view all the current employees by navigating to the “Employees” page.
+You can view all the current employees by navigating to the "Employees" page.
+
 ## Run Locally
 
 ```bash
-  git clone https://github.com/Stav352/Portfolio-application.git \
-  pushd Portfolio-application \ 
+  git clone https://github.com/Stav352/StaffHub.git \
+  pushd StaffHub \ 
   docker compose up -d 
 ```
 
@@ -80,6 +78,7 @@ To run this project, you will need to add the following environment variables to
 ## Support
 
 For support, email Stav@example.com.
+
 ## Roadmap
 
 - Add more API methods
