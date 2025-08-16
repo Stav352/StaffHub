@@ -40,11 +40,11 @@ test2=$(curl --location --request POST 'localhost/add' \
 --form 'user_first_name="Stav"' \
 --form 'user_last_name="Nahum"' \
 --form 'user_address="Example"' \
---form 'user_email="stav352@gmail.com"' \
---form 'user_date_of_birth="26-09-1999"' \
+--form 'user_email="stav123@gmail.com"' \
+--form 'user_date_of_birth="01-01-1999"' \
 --form 'user_gender="Male"' \
 --form 'user_department="DevOps"' \
---form 'user_phone_number="0528349868"' \
+--form 'user_phone_number="0123456789"' \
 --form 'status="active"')
 expected_result2="Employee's information was added successfully"
 if echo "$test2" | grep -q "$expected_result2"
@@ -84,11 +84,11 @@ expected_result3='<!DOCTYPE html>
           <td>Stav</td>
           <td>Nahum</td>
           <td>Example</td>
-          <td>stav352@gmail.com</td>
-          <td>26-09-1999</td>
+          <td>stav123@gmail.com</td>
+          <td>01-01-1999</td>
           <td>Male</td>
           <td>DevOps</td>
-          <td>0528349868</td>
+          <td>0123456789</td>
           <td>active</td>
         </tr>
 
@@ -119,7 +119,7 @@ test5=$(curl --location --request POST 'localhost/update' \
 --form 'last_name="Nahum"' \
 --form 'address="Testing"' \
 --form 'email="stav352@gmail.com"' \
---form 'date_of_birth="26-09-1999"' \
+--form 'date_of_birth="01-01-1999"' \
 --form 'gender="male"' \
 --form 'department="QA"' \
 --form 'phone_number="0123456789"' \
